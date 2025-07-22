@@ -80,6 +80,24 @@
             border-radius: .8rem;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
         }
+
+        .custom-input-group:focus-within .input-group {
+            border: 1px solid #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            border-radius: 0.375rem;
+        }
+
+        .custom-input-group .input-group {
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            overflow: hidden;
+        }
+
+
+        .input-group-text,
+        .form-control {
+            height: 100%;
+        }
     </style>
 </head>
 
@@ -108,14 +126,15 @@
                             <h5>Filter & Sort Reviews</h5>
                         </div>
                         <div class="col-md-3 mb-2 mb-md-0">
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <i class="bi bi-search"></i>
-                                </span>
-                                <input type="text" class="form-control bg-light border-start-0"
-                                    placeholder="Search reviews...">
+                            <div class="custom-input-group">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control bg-light border-0"
+                                        placeholder="Search reviews...">
+                                </div>
                             </div>
-
                         </div>
                         <div class="col-md-2 mb-2 mb-md-0">
                             <select class="form-select bg-light">
@@ -127,7 +146,8 @@
                         <div class="col-md-3">
                             <select class="form-select bg-light">
                                 <option>Most Recent</option>
-                                <option>Top Rated</option>
+                                <option>High Ratings</option>
+                                <option>Low Ratings</option>
                             </select>
                         </div>
                     </div>
