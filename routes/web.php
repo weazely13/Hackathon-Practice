@@ -26,6 +26,10 @@ Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
 });
 
-Route::get('/user-feedback', function () {
-    return view('/auth/user-feedback'); // user feedback(s) page
+Route::get('/user-feedback-form', function () {
+    return view('/auth/user-feedback-form'); // user feedback(s) page
+});
+
+Route::get('/user-feedback-home', function () {
+    return view('/auth/user-feedback-home'); // user feedback(s) page
 });

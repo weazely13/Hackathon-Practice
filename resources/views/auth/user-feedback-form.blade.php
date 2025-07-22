@@ -54,6 +54,24 @@
             transform: scale(1.02);
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
         }
+
+        .public-btn {
+            margin-top: 1rem;
+            background-color: #ffffff;
+            color: rgb(61, 61, 61);
+            border: 1px solid #8b8b8b;
+            padding: 0.5rem 0.8rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            text-align: center;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .public-btn:hover {
+            background-color: #f0f0f0;
+            color: #333;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 
@@ -105,14 +123,19 @@
                     <small id="charCount" class="text-muted float-end">0/500 characters</small>
                 </div>
 
-                <div class="">
-                    <button type="submit" class=" btn btn-primary">Submit Feedback</button>
-                </div>
+
+                <button type="submit" class=" btn btn-primary">Submit Feedback</button>
+
             </form>
 
             <p class="text-muted mt-4 text-center small">Your feedback is anonymous and helps improve the quality of
                 service.</p>
         </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            <a href="/user-feedback-home" class="public-btn text-decoration-none">View Public Feedback</a>
+        </div>
+
     </div>
 
     <script>
