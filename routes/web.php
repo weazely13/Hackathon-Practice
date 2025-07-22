@@ -25,3 +25,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
 });
+
+Route::get('/user-feedback', function () {
+    return view('/auth/user-feedback'); // user feedback(s) page
+});
