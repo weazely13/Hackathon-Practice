@@ -101,7 +101,7 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('profile') }}" class="nav-link">
                     <i class="bi bi-person-circle"></i>
                     Profile
                 </a>

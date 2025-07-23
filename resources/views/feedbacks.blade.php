@@ -56,7 +56,7 @@
                 </div>
                 <div class="user-details">
                     <h6>{{ auth()->user()->name }}</h6>
-                    <small>{{ auth()->user()->role }}</small>
+                    <small>Business Owner</small>
                 </div>
             </div>
             <button class="btn-logout">
