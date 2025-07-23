@@ -1,16 +1,14 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QRCodeController;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome'); // landing page
-});
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect('/dashboard');
     }
-    return view('welcome');
+    return view('welcome'); // landing page
 });
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -30,9 +28,8 @@ Route::middleware('auth')->get('/dashboard', function () {
 });
 
 Route::get('/user-feedback-form', function () {
-    return view('/user/user-feedback-form'); // user feedback(s) page
+    return view('/user/user-feedback-form');
 });
-
 Route::get('/user-feedback-home', function () {
-    return view('/user/user-feedback-home'); // user feedback(s) page
+    return view('/user/user-feedback-home');
 });
