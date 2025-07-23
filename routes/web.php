@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome'); // landing page
-});
+// Landing page, with auth redirect
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect('/dashboard');
@@ -13,6 +13,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Auth routes
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
