@@ -9,6 +9,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .body {}
+
         .btn-feedback {
             text-decoration: none;
             display: flex;
@@ -112,81 +114,87 @@
             <span class="text-white">| 127 reviews</span>
         </div>
         <div class="d-flex justify-content-center">
-            <a href="{{ route('feedback.form')}}" class="btn-feedback">Leave Feedback</a>
+            <a href="{{ route('feedback.form') }}" class="btn-feedback">Leave Feedback</a>
         </div>
     </div>
 
     <!-- Filter and Sort -->
     <div class="container my-5">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="filter mb-4">
-                    <div class="row align-items-center">
-                        <div class="col-md-4">
-                            <h5>Filter & Sort Reviews</h5>
-                        </div>
-                        <div class="col-md-3 mb-2 mb-md-0">
-                            <div class="custom-input-group">
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-0">
-                                        <i class="bi bi-search"></i>
-                                    </span>
-                                    <input type="text" class="form-control bg-light border-0"
-                                        placeholder="Search reviews...">
+        <div class="mx-auto" style="max-width: 800px">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="filter mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <h5>Filter & Sort Reviews</h5>
+                            </div>
+                            <div class="col-md-3 mb-2 mb-md-0">
+                                <div class="custom-input-group">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0">
+                                            <i class="bi bi-search"></i>
+                                        </span>
+                                        <input type="text" class="form-control bg-light border-0"
+                                            placeholder="Search reviews...">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-2 mb-2 mb-md-0">
-                            <select class="form-select bg-light">
-                                <option>All Categories</option>
-                                <option>Food</option>
-                                <option>Service</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select bg-light">
-                                <option>Most Recent</option>
-                                <option>High Ratings</option>
-                                <option>Low Ratings</option>
-                            </select>
+                            <div class="col-md-2 mb-2 mb-md-0">
+                                <select class="form-select bg-light">
+                                    <option>All Categories</option>
+                                    <option>Food</option>
+                                    <option>Service</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select bg-light">
+                                    <option>Most Recent</option>
+                                    <option>High Ratings</option>
+                                    <option>Low Ratings</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <!-- Review Card -->
-        <div class="review-card">
-            <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                <span class="category-tag">Service</span>
-                <span class="pinned-badge">📌 Pinned</span>
-            </div>
-            <h5>Excellent Service and Food</h5>
-            <small class="text-muted">Jan 15, 2024 • Anonymous Customer</small>
-            <p class="mt-2">The staff was incredibly helpful and the food was amazing. The ambiance was perfect for
-                our date night. Will definitely come back!</p>
+            <!-- Review Card -->
+            @isset($reviews)
+                @foreach ($reviews as $review)
+                    <div class="review-card mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">{{ $review->title }}</h5>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="text-warning" style="font-size: 1.2rem">
+                                    @for ($i = 0; $i < $review->rating; $i++)
+                                        &#9733;
+                                    @endfor
+                                </span>
+                                <span class="category-tag">{{ $review->category }}</span>
+                                @if ($review->is_pinned)
+                                    <span class="pinned-badge">📌 Pinned</span>
+                                @endif
+                            </div>
+                        </div>
 
-            <!-- Response from Restaurant -->
-            <div class="response-box">
-                <strong class="text-primary">Response from Demo Restaurant</strong>
-                <p class="mb-0">Thank you so much for your wonderful review! We're thrilled you enjoyed your date
-                    night with us. Looking forward to welcoming you back soon!</p>
-            </div>
+                        <small class="text-muted">
+                            {{ $review->created_at->format('M d, Y') }} • {{ $review->author ?? 'Anonymous' }}
+                        </small>
 
-            <!-- Like and Report -->
-            <div class="mt-3 d-flex gap-4 align-items-center">
-                <button id="likeBtn" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2">
-                    <i class="bi bi-hand-thumbs-up"></i>
-                    <span id="likeCount">12</span>
-                </button>
+                        <p class="mt-2">{{ $review->content }}</p>
 
-                <button id="flagBtn" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2">
-                    <i class="bi bi-flag"></i>
-                    <span>Flag</span>
-                </button>
-            </div>
+                        @if ($review->response)
+                            <div class="response-box mt-2 p-2 border rounded bg-light">
+                                <strong class="text-primary">Response from {{ config('app.name') }}</strong>
+                                <p class="mb-0">{{ $review->response }}</p>
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+            @else
+                <p>No Reviews Available.</p>
+            @endisset
         </div>
     </div>
 

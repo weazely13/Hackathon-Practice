@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FeedbackController;
 
 // Landing page, with auth redirect
 Route::get('/', function () {
@@ -48,6 +49,8 @@ Route::get('/user-feedback-form', function () {
     return view('/user/user-feedback-form'); // user feedback(s) page
 }) -> name ('feedback.form');
 
-Route::get('/user-feedback-home', function () {
-    return view('/user/user-feedback-home'); // user feedback(s) page
-}) -> name ('feedback.home');
+// Route::get('/user-feedback-home', function () {
+//     return view('/user/user-feedback-home'); // user feedback(s) page
+// }) -> name ('feedback.home');
+
+Route::get('/user-feedback-home', [FeedbackController::class, 'index']) -> name('feedback.home');
