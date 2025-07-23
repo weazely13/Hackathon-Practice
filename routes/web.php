@@ -21,6 +21,9 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/dashboard', [QRCodeController::class, 'dashboard'])->middleware('auth');
+
+Route::post('/generate-qr', [QRCodeController::class, 'generate'])->middleware('auth')->name('generate.qr');
 // Protected route
 Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
