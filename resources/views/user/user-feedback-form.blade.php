@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Feedback Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -98,7 +100,8 @@
                 <p id="ratingValue" class="mt-2 text-muted">No rating selected</p>
             </div>
 
-            <form>
+            <form id="feedbackForm">
+                <input type="hidden" id="business_owner_id" value="1"> <!-- Replace 1 with dynamic owner ID -->
                 <div class="mb-3">
                     <label for="category" class="form-label">Category</label>
                     <select class="form-select bg-light" id="category">
@@ -112,21 +115,18 @@
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title (Optional)</label>
-                    <input type="text" class="form-control bg-light" id="title"
-                        placeholder="Give your review a title...">
+                    <input type="text" class="form-control bg-light" id="title" placeholder="Give your review a title...">
                 </div>
 
                 <div class="mb-3">
                     <label for="feedback" class="form-label">Your Feedback (Optional)</label>
-                    <textarea class="form-control bg-light" id="feedback" rows="4" maxlength="500"
-                        placeholder="Tell us about your experience. What went well? What could be improved?"></textarea>
+                    <textarea class="form-control bg-light" id="feedback" rows="4" maxlength="500" placeholder="Tell us about your experience. What went well? What could be improved?"></textarea>
                     <small id="charCount" class="text-muted float-end">0/500 characters</small>
                 </div>
 
-
-                <button type="submit" class=" btn btn-primary">Submit Feedback</button>
-
+                <button type="submit" class="btn btn-primary">Submit Feedback</button>
             </form>
+
 
             <p class="text-muted mt-4 text-center small">Your feedback is anonymous and helps improve the quality of
                 service.</p>
@@ -153,6 +153,68 @@
         feedback.addEventListener('input', () => {
             charCount.textContent = `${feedback.value.length}/500 characters`;
         });
+
+        document.getElementById('feedbackForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const rating = document.querySelector('.star-rating input:checked')?.value;
+            const category = document.getElementById('category').value;
+            const title = document.getElementById('title').value;
+            const comment = document.getElementById('feedback').value;
+            const business_owner_id = document.getElementById('business_owner_id').value;
+
+            const formData = {
+                rating,
+                category,
+                title,
+                comment,
+                business_owner_id,
+            };
+
+            const response = await fetch('/feedback/store', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            fetch('/feedback/store', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(async response => {
+                const contentType = response.headers.get('content-type');
+                const text = await response.text();
+
+                if (!response.ok) {
+                    throw new Error(text);
+                }
+
+                if (contentType && contentType.includes('application/json')) {
+                    return JSON.parse(text);
+                } else {
+                    throw new Error('Expected JSON but got HTML:\n' + text.slice(0, 200));
+                }
+            })
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(err => {
+                console.error('Error:', err.message);
+                alert('Something went wrong:\n' + err.message);
+            });
+
+
+        });
+
     </script>
 </body>
 

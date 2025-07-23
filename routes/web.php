@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PublicFeedbackController;
 
 // Landing page, with auth redirect
 Route::get('/', function () {
@@ -48,6 +49,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/user-feedback-form', function () {
     return view('/user/user-feedback-form'); // user feedback(s) page
 });
+
+
+Route::post('/feedback/store', [PublicFeedbackController::class, 'store'])->name('feedback.store');
+
 
 Route::get('/user-feedback-home', function () {
     return view('/user/user-feedback-home'); // user feedback(s) page

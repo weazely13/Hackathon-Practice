@@ -14,4 +14,20 @@ class BusinessOwner extends Authenticatable
         'email',
         'password',
     ];
+    protected $hidden = ['password', 'remember_token'];
+
+    public function profile()
+    {
+        return $this->hasOne(BusinessProfile::class);
+    }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+
+    public function qrCodes()
+    {
+        return $this->hasMany(QrCode::class);
+    }
 }
