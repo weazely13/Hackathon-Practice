@@ -82,58 +82,62 @@
             <p class="text-center text-muted mb-4">Your feedback helps Demo Restaurant provide better service</p>
 
             <h6 class="text-center mt-3" style="margin-bottom: -.5rem">How would you rate your experience?</h6>
-            <div class="text-center mb-3">
-                <div class="star-rating">
-                    <input type="radio" name="rating" id="star5" value="5" /><label
-                        for="star5">&#9733;</label>
-                    <input type="radio" name="rating" id="star4" value="4" /><label
-                        for="star4">&#9733;</label>
-                    <input type="radio" name="rating" id="star3" value="3" /><label
-                        for="star3">&#9733;</label>
-                    <input type="radio" name="rating" id="star2" value="2" /><label
-                        for="star2">&#9733;</label>
-                    <input type="radio" name="rating" id="star1" value="1" /><label
-                        for="star1">&#9733;</label>
-                </div>
-                <p id="ratingValue" class="mt-2 text-muted">No rating selected</p>
-            </div>
 
-            <form>
+
+            <form method="POST" action="{{ route('feedback.submit') }}">
+                @csrf
+                <div class="text-center mb-3">
+                    <div class="star-rating">
+                        <input type="radio" name="rating" id="star5" value="5" /><label
+                            for="star5">&#9733;</label>
+                        <input type="radio" name="rating" id="star4" value="4" /><label
+                            for="star4">&#9733;</label>
+                        <input type="radio" name="rating" id="star3" value="3" /><label
+                            for="star3">&#9733;</label>
+                        <input type="radio" name="rating" id="star2" value="2" /><label
+                            for="star2">&#9733;</label>
+                        <input type="radio" name="rating" id="star1" value="1" /><label
+                            for="star1">&#9733;</label>
+                    </div>
+                    <p id="ratingValue" class="mt-2 text-muted">No rating selected</p>
+                </div>
+
+
+
                 <div class="mb-3">
                     <label for="category" class="form-label">Category</label>
-                    <select class="form-select bg-light" id="category">
+                    <select class="form-select bg-light" id="category" name="category" required>
                         <option selected disabled>What aspect would you like to rate?</option>
-                        <option value="food">Food</option>
-                        <option value="service">Service</option>
-                        <option value="ambience">Ambience</option>
-                        <option value="cleanliness">Cleanliness</option>
+                        <option value="Food">Food</option>
+                        <option value="Service">Service</option>
+                        <option value="Ambience">Ambience</option>
+                        <option value="Cleanliness">Cleanliness</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title (Optional)</label>
                     <input type="text" class="form-control bg-light" id="title"
-                        placeholder="Give your review a title...">
+                        placeholder="Give your review a title..." name="title">
                 </div>
 
                 <div class="mb-3">
                     <label for="feedback" class="form-label">Your Feedback (Optional)</label>
-                    <textarea class="form-control bg-light" id="feedback" rows="4" maxlength="500"
+                    <textarea class="form-control bg-light" id="feedback" rows="4" maxlength="500" name="feedback"
                         placeholder="Tell us about your experience. What went well? What could be improved?"></textarea>
                     <small id="charCount" class="text-muted float-end">0/500 characters</small>
                 </div>
 
-
-                <button type="submit" class=" btn btn-primary">Submit Feedback</button>
-
+                <button type="submit" class="btn btn-primary">Submit Feedback</button>
             </form>
+
 
             <p class="text-muted mt-4 text-center small">Your feedback is anonymous and helps improve the quality of
                 service.</p>
         </div>
 
         <div class="d-flex justify-content-center mt-3">
-            <a href="{{ route('feedback.home')}}" class="public-btn text-decoration-none">View Feedbacks</a>
+            <a href="{{ route('feedback.home') }}" class="public-btn text-decoration-none">View Feedbacks</a>
         </div>
 
     </div>

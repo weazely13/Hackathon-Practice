@@ -54,3 +54,5 @@ Route::get('/user-feedback-form', function () {
 // }) -> name ('feedback.home');
 
 Route::get('/user-feedback-home', [FeedbackController::class, 'index']) -> name('feedback.home');
+
+Route::post('/submit-feedback', [FeedbackController::class, 'store']) -> name('feedback.submit');

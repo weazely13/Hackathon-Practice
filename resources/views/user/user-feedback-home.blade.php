@@ -11,6 +11,11 @@
     <style>
         .body {}
 
+        .btn {
+            background: linear-gradient(to right, #1993d0, #58d2f1);
+            border: none;
+        }
+
         .btn-feedback {
             text-decoration: none;
             display: flex;
@@ -48,6 +53,14 @@
             border: .7px solid #e9e9e9;
         }
 
+        .review-card:hover {
+            box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.07);
+            transform: translateY(-2px);
+            border: 1px solid #2196f3;
+            transition: all 0.2s ease-in-out;
+        }
+
+
         .response-box {
             background-color: #f8f9fa;
             border-left: 4px solid #0d6efd;
@@ -81,6 +94,13 @@
             padding: 2rem;
             border-radius: .8rem;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        }
+
+        .filter:hover{
+            box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.07);
+            transform: translateY(-2px);
+            border: 1px solid #2196f3;
+            transition: all 0.2s ease-in-out;
         }
 
         .custom-input-group:focus-within .input-group {
@@ -121,39 +141,41 @@
     <!-- Filter and Sort -->
     <div class="container my-5">
         <div class="mx-auto" style="max-width: 800px">
-            <div class="row">
+            <div class="filterContainer row">
                 <div class="col-md-12">
                     <div class="filter mb-4">
-                        <div class="row align-items-center">
-                            <div class="col-md-4">
-                                <h5>Filter & Sort Reviews</h5>
-                            </div>
-                            <div class="col-md-3 mb-2 mb-md-0">
-                                <div class="custom-input-group">
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-0">
-                                            <i class="bi bi-search"></i>
-                                        </span>
-                                        <input type="text" class="form-control bg-light border-0"
-                                            placeholder="Search reviews...">
-                                    </div>
+                        <form method="GET" action="{{ route('feedback.home') }}" id="filterForm">
+                            <div class="row align-items-end g-2">
+                                <div class="col-md-3">
+                                    <h5>Filter Reviews</h5>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="category" class="form-select bg-light">
+                                        <option value="">All Categories</option>
+                                        <option value="Food" {{ request('category') == 'Food' ? 'selected' : '' }}>
+                                            Food</option>
+                                        <option value="Service"
+                                            {{ request('category') == 'Service' ? 'selected' : '' }}>Service</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="sort" class="form-select bg-light">
+                                        <option value="">Most Recent</option>
+                                        <option value="high" {{ request('sort') == 'high' ? 'selected' : '' }}>High
+                                            Ratings</option>
+                                        <option value="low" {{ request('sort') == 'low' ? 'selected' : '' }}>Low
+                                            Ratings</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary w-100">Apply Filter</button>
                                 </div>
                             </div>
-                            <div class="col-md-2 mb-2 mb-md-0">
-                                <select class="form-select bg-light">
-                                    <option>All Categories</option>
-                                    <option>Food</option>
-                                    <option>Service</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-select bg-light">
-                                    <option>Most Recent</option>
-                                    <option>High Ratings</option>
-                                    <option>Low Ratings</option>
-                                </select>
-                            </div>
-                        </div>
+
+
+
+                        </form>
+
                     </div>
                 </div>
             </div>
@@ -182,7 +204,7 @@
                             {{ $review->created_at->format('M d, Y') }} • {{ $review->author ?? 'Anonymous' }}
                         </small>
 
-                        <p class="mt-2">{{ $review->content }}</p>
+                        <p class="mt-2">{{ $review->feedback }}</p>
 
                         @if ($review->response)
                             <div class="response-box mt-2 p-2 border rounded bg-light">
@@ -198,27 +220,46 @@
         </div>
     </div>
 
+    <script>
+        let liked = false;
+        let flagged = false;
+
+        document.getElementById('likeBtn').addEventListener('click', function() {
+            if (!liked) {
+                const countSpan = document.getElementById('likeCount');
+                countSpan.textContent = parseInt(countSpan.textContent) + 1;
+                this.classList.replace('btn-outline-primary', 'btn-primary');
+                liked = true;
+            }
+        });
+
+        document.getElementById('flagBtn').addEventListener('click', function() {
+            if (!flagged) {
+                this.innerHTML = '🚩 <span>Flagged</span>';
+                this.classList.replace('btn-outline-danger', 'btn-danger');
+                flagged = true;
+            }
+        });
+
+        document.querySelectorAll('#filterForm select').forEach(function(select) {
+            select.addEventListener('change', function() {
+                const form = document.getElementById('filterForm');
+                const url = new URL(window.location.href);
+                const formData = new FormData(form);
+
+                // Reset query string to match current form state
+                url.search = '';
+                formData.forEach((value, key) => {
+                    url.searchParams.set(key, value);
+
+                });
+
+                window.location.href = url.toString();
+            });
+        });
+    </script>
+
 </body>
-<script>
-    let liked = false;
-    let flagged = false;
 
-    document.getElementById('likeBtn').addEventListener('click', function() {
-        if (!liked) {
-            const countSpan = document.getElementById('likeCount');
-            countSpan.textContent = parseInt(countSpan.textContent) + 1;
-            this.classList.replace('btn-outline-primary', 'btn-primary');
-            liked = true;
-        }
-    });
-
-    document.getElementById('flagBtn').addEventListener('click', function() {
-        if (!flagged) {
-            this.innerHTML = '🚩 <span>Flagged</span>';
-            this.classList.replace('btn-outline-danger', 'btn-danger');
-            flagged = true;
-        }
-    });
-</script>
 
 </html>
