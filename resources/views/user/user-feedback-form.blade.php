@@ -133,7 +133,7 @@
         </div>
 
         <div class="d-flex justify-content-center mt-3">
-            <a href="/user-feedback-home" class="public-btn text-decoration-none">View Public Feedback</a>
+            <a href="{{ route('feedback.home')}}" class="public-btn text-decoration-none">View Feedbacks</a>
         </div>
 
     </div>

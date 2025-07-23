@@ -112,7 +112,7 @@
             <span class="text-white">| 127 reviews</span>
         </div>
         <div class="d-flex justify-content-center">
-            <a href="/user-feedback-form" class="btn-feedback">Leave Feedback</a>
+            <a href="{{ route('feedback.form')}}" class="btn-feedback">Leave Feedback</a>
         </div>
     </div>
 
