@@ -25,6 +25,24 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Protected route
 Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
+    })->name('dashboard');
+
+Route::get('/feedbacks', function () {
+    return view('feedbacks'); 
+    })->name('feedbacks');
+
+Route::get('/analytics', function () {
+    return view('analytics'); 
+    })->name('analytics');
+
+Route::get('/profile', function () {
+    return view('profile');
+    })->name('profile');
+
+
+Route::middleware('auth')->group(function () {
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 });
 
 Route::get('/user-feedback-form', function () {
